@@ -84,7 +84,7 @@ class PayForm(forms.Form):
     paid = forms.CharField(label='付款状态', widget=forms.widgets.Select(choices=states))
 
 
-class PubSearchForm(forms.Form):
+class PubForm(forms.Form):
     name = forms.CharField(label='出版社名称', max_length=30, required=False)
 
 

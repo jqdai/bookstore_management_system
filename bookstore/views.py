@@ -338,7 +338,7 @@ def publishers(request):
     pubs = Publisher.objects.all()
     ct = {'pubs': pubs}
     if request.method == 'POST':
-        form = PubSearchForm(request.POST)
+        form = PubForm(request.POST)
         if form.is_valid():
             pub_name = form.cleaned_data['name']
             selected_pubs = Publisher.objects.filter(name__contains=pub_name)
@@ -365,7 +365,7 @@ def pub_update(request, pid):
     user = request.user
     publisher = get_object_or_404(Publisher, id=pid)
     if request.method == 'POST':
-        form = PubSearchForm(request.POST)
+        form = PubForm(request.POST)
         if form.is_valid():
             publisher.name = form.cleaned_data['name']
             publisher.save()
@@ -375,5 +375,5 @@ def pub_update(request, pid):
             messages.error(request, '修改失败，请重试。注意务必按照规定的格式填写信息！')
     else:
         default_data = {'name': publisher.name, }
-        form = PubSearchForm(default_data)
+        form = PubForm(default_data)
     return render(request, 'bookstore/profile_update.html', {'form': form, 'user': user})
