@@ -33,9 +33,15 @@ class PublisherAdmin(admin.ModelAdmin):
     list_filter = ('name', )
 
 
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ('name', )
+    list_filter = ('name', )
+
+
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author', 'publisher', 'ISBN', 'price', 'inventory')
+    list_display = ('name', 'publisher', 'ISBN', 'price', 'inventory')
     list_filter = ('author', 'publisher')
     inlines = [TransactionInline]
 

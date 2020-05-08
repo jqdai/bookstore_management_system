@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>作者检索结果</h1>
+
+    {% if selected_authors %}
+    <ul>
+
+      {% for author in selected_authors %}
+      <li>
+        <p>作者姓名：<a href="{{ author.get_absolute_url }}">{{ author.name }}</a></p>
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>居然没人写抽象圣经？在？道个歉？</p>
+    {% endif %}       
+{% endblock %}

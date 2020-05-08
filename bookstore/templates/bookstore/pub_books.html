@@ -8,7 +8,7 @@
         <li>出版社名称：{{ publisher.name }}</li>
         </ul>
 
-        <a href="{% url 'profile_update' user.id %}" class="m1">编辑信息</a>
+        <a href="{% url 'pub_update' publisher.id %}" class="m1">编辑信息</a>
 
         <h2 class="title-style">出版图书</h2>
         <ul class="b1">
@@ -18,7 +18,7 @@
         </li>
         {% empty %}
         <li>
-            没有了，没有此人负责的订单了！
+            没有了，没有这家出版的图书了！
         </li>
         {% endfor %}
         </ul>

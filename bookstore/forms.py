@@ -7,7 +7,7 @@ class ProfileForm(forms.Form):
     '''
     修改管理员个人信
     '''
-    sex = (('male', '男'), ('female', '女'))
+    sex = (('男', '男'), ('男', '女'))
     name = forms.CharField(label='姓名', max_length=30)
     age = forms.CharField(label='年龄', max_length=2)
     gender = forms.CharField(label='性别', widget=forms.widgets.Select(choices=sex))
@@ -84,7 +84,17 @@ class PayForm(forms.Form):
     paid = forms.CharField(label='付款状态', widget=forms.widgets.Select(choices=states))
 
 
-class PubForm(forms.Form):
+class PubSearchForm(forms.Form):
     name = forms.CharField(label='出版社名称', max_length=30, required=False)
 
 
+class PubUpdateForm(forms.Form):
+    name = forms.CharField(label='出版社名称', max_length=30)
+
+
+class AuthorSearchForm(forms.Form):
+    name = forms.CharField(label='作者姓名', max_length=50, required=False)
+
+
+class AuthorUpdateForm(forms.Form):
+    name = forms.CharField(label='作者姓名', max_length=50)

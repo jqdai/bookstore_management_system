@@ -45,8 +45,9 @@ def book_list(request):
             aname = form.cleaned_data['author']
             lang = form.cleaned_data['language']
             pub = form.cleaned_data['publisher']
-            publisher = Publisher.objects.get(name=pub)
-            selected_books = publisher.book_set.order_by('name')
+            selected_books = Book.objects.distinct()
+            if pub:
+                selected_books = Publisher.objects.get(name=pub).book_set.order_by('name')
             if isbn:
                 selected_books = selected_books.filter(ISBN=isbn)
             if bname:
@@ -54,11 +55,9 @@ def book_list(request):
             if aname:
                 aname_list = aname.split('，')
                 for name in aname_list:
-                    selected_books = selected_books.filter(author__contains=name)
+                    selected_books = selected_books.filter(author__name__contains=name)
             if lang:
                 selected_books = selected_books.filter(language=lang)
-            if pub:
-                selected_books = selected_books.filter(publisher=pub)
             context = {'selected_books': selected_books}
             return render(request, 'bookstore/search.html', context=context)
     return render(request, 'bookstore/book_list.html', context=ct)
@@ -151,28 +150,39 @@ def new_book(request):
     :return:
     '''
     user = request.user
+    admin = Admin.objects.get(user=user)
     if request.method == 'POST':
         form = NewBookForm(request.POST)
         if form.is_valid():
-            publisher = Publisher.objects.get(name=form.cleaned_data['publisher'])
-            if not publisher:
+            pubtemp = Publisher.objects.filter(name=form.cleaned_data['publisher'])
+            if not pubtemp:
                 publisher = Publisher(name=form.cleaned_data['publisher'])
                 publisher.save()
+            else:
+                publisher = pubtemp[0]
             new_book = Book(
                 ISBN=form.cleaned_data['ISBN'],
                 name=form.cleaned_data['name'],
-                author=form.cleaned_data['author'],
-                lang=form.cleaned_data['language'],
+                language=form.cleaned_data['language'],
                 publisher=publisher,
                 price=form.cleaned_data['price'],
                 inventory=form.cleaned_data['amount'],
             )
             new_book.save()
+            author_list = form.cleaned_data['author'].split('，')
+            for aname in author_list:
+                auth_temp = Author.objects.filter(name=aname)
+                if not auth_temp:
+                    new_author = Author(name=aname)
+                    new_author.save()
+                else:
+                    new_author = auth_temp[0]
+                new_book.author.add(new_author)
 
             new_trans = Transaction(
                 in_out='进货',
                 book=new_book,
-                ruler=user,
+                ruler=admin,
                 cost=form.cleaned_data['cost'],
                 amount=form.cleaned_data['amount'],
                 time=timezone.now(),
@@ -198,6 +208,7 @@ def add_book(request, bid):
     :return:
     '''
     user = request.user
+    admin = Admin.objects.get(user=user)
     targ = Book.objects.get(id=bid)
     if request.method == 'POST':
         form = AddForm(request.POST)
@@ -209,7 +220,7 @@ def add_book(request, bid):
             new_trans = Transaction(
                 in_out='进货',
                 book=targ,
-                ruler=user,
+                ruler=admin,
                 cost=book_cost,
                 amount=book_amount,
                 time=timezone.now(),
@@ -235,6 +246,7 @@ def sell_book(request, bid):
     :return:
     '''
     user = request.user
+    admin = Admin.objects.get(user=user)
     targ = Book.objects.get(id=bid)
     if request.method == 'POST':
         form = SellForm(request.POST)
@@ -248,7 +260,7 @@ def sell_book(request, bid):
                 new_trans = Transaction(
                     in_out='出货',
                     book=targ,
-                    ruler=user,
+                    ruler=admin,
                     cost=targ.price,
                     amount=book_amount,
                     time=timezone.now(),
@@ -338,7 +350,7 @@ def publishers(request):
     pubs = Publisher.objects.all()
     ct = {'pubs': pubs}
     if request.method == 'POST':
-        form = PubForm(request.POST)
+        form = PubSearchForm(request.POST)
         if form.is_valid():
             pub_name = form.cleaned_data['name']
             selected_pubs = Publisher.objects.filter(name__contains=pub_name)
@@ -362,18 +374,67 @@ def pub_books(request, pid):
 
 @login_required
 def pub_update(request, pid):
-    user = request.user
     publisher = get_object_or_404(Publisher, id=pid)
     if request.method == 'POST':
-        form = PubForm(request.POST)
+        form = PubUpdateForm(request.POST)
         if form.is_valid():
             publisher.name = form.cleaned_data['name']
             publisher.save()
             messages.error(request, '修改成功')
-            return HttpResponseRedirect(reverse('profile', args=[pid]))
+            return HttpResponseRedirect(reverse('pub_books', args=[pid]))
         else:
             messages.error(request, '修改失败，请重试。注意务必按照规定的格式填写信息！')
     else:
         default_data = {'name': publisher.name, }
-        form = PubForm(default_data)
-    return render(request, 'bookstore/profile_update.html', {'form': form, 'user': user})
+        form = PubUpdateForm(default_data)
+    return render(request, 'bookstore/pub_update.html', {'form': form, 'publisher': publisher})
+
+
+@login_required
+def authors(request):
+    all_authors = Author.objects.all()
+    selected_authors = all_authors
+    ct = {'all_authors': all_authors}
+    if request.method == 'POST':
+        form = AuthorSearchForm(request.POST)
+        if form.is_valid():
+            aname = form.cleaned_data['name']
+            if aname:
+                selected_authors = all_authors.filter(name__contains=aname)
+            context = {'selected_authors': selected_authors}
+            return render(request, 'bookstore/author_search.html', context=context)
+    return render(request, 'bookstore/author_list.html', context=ct)
+
+
+@login_required
+def author_books(request, aid):
+    '''
+    展示出版社基本信息与所出版图书，可以修改基本信息
+    :param request:
+    :param pid:
+    :return:
+    '''
+    author = get_object_or_404(Author, id=aid)
+    author_books = author.book_set.filter(author=author)
+    return render(request, 'bookstore/author_books.html', {'author': author, 'author_books': author_books})
+
+
+@login_required
+def author_update(request, aid):
+    author = get_object_or_404(Author, id=aid)
+    if request.method == 'POST':
+        form = AuthorUpdateForm(request.POST)
+        if form.is_valid():
+            author.name = form.cleaned_data['name']
+            author.save()
+            messages.error(request, '修改成功')
+            return HttpResponseRedirect(reverse('author_books', args=[aid]))
+        else:
+            messages.error(request, '修改失败，请重试。注意务必按照规定的格式填写信息！')
+    else:
+        default_data = {'name': author.name, }
+        form = AuthorUpdateForm(default_data)
+    return render(request, 'bookstore/author_update.html', {'form': form, 'author': author})
+
+
+

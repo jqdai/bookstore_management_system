@@ -43,6 +43,21 @@ class Publisher(models.Model):
         return reverse('pub_books', args=[str(self.id)])
 
 
+class Author(models.Model):
+    name = models.CharField(max_length=30, verbose_name='作者姓名')
+
+    class Meta:
+        verbose_name = '作者'
+        verbose_name_plural = '作者'
+        ordering = ['name', ]
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('author_books', args=[str(self.id)])
+
+
 class Book(models.Model):
     """
     书籍信息模式，包括 ISBN号、书名、出版社、价格、库存
@@ -51,7 +66,7 @@ class Book(models.Model):
                             [vl.RegexValidator(regex='^\d{13}$', message='请确保ISBN格式正确！')])
     name = models.CharField(max_length=50, verbose_name='书名')
     language = models.CharField(max_length=10, verbose_name='语言', default='汉语')
-    author = models.CharField(max_length=30, verbose_name='作者')
+    author = models.ManyToManyField(Author, verbose_name='作者')
     publisher = models.ForeignKey(Publisher, on_delete=models.DO_NOTHING, verbose_name='出版社')
     price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='售价', validators=
                                 [vl.MaxValueValidator(999.99, message='最高999.99元'),
@@ -61,10 +76,10 @@ class Book(models.Model):
     class Meta:
         verbose_name = '图书信息'
         verbose_name_plural = '图书信息'
-        ordering = ['name', 'author', 'publisher']
+        ordering = ['name', 'publisher']
 
     def __str__(self):
-        return '《' + self.name + '》，' + self.author + '，' + self.ISBN + '，' + self.publisher.name
+        return '《' + self.name + '》，' + self.ISBN + '，' + self.publisher.name
 
     def get_absolute_url(self):
         return reverse('related_transaction', args=[str(self.id)])
@@ -94,9 +109,7 @@ class Transaction(models.Model):
     def __str__(self):
         rt = ''
         rt += 'Book name: ' + self.book.name
-        rt += '\nAuthor: ' + self.book.author
         rt += '\nISBN: ' + self.book.ISBN
-        rt += '\nPublisher:' + self.book.publisher
         rt += '\nDate: ' + str(self.time)
         rt += '\n' + self.paid
         return rt
