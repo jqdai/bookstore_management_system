@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}<h1 class="my-con1">用户个人信息</h1>{% endblock %}
+
+{% block content %}
+    <div class="body">
+        <h2 class="title-style">用户信息</h2>
+        <ul class="b1">
+        <li>用户名：{{ admin.user.username }}</li>
+        <li>邮箱：{{ admin.user.email }}</li>
+        <li>姓名：{{ admin.name }}</li>
+        <li>年龄：{{ admin.age }}</li>
+        <li>性别：{{ admin.gender }}</li>
+        <li>电话：{{ admin.phone }}</li>
+        <li>住址：{{ admin.address }}</li>
+        </ul>
+
+        <a href="{% url 'profile_update' user.id %}" class="m1">编辑信息</a>
+
+        <h2 class="title-style">负责订单</h2>
+        <ul class="b1">
+        {% for trans in res_trans %}
+        <li>
+        <p>交易单号：{{ trans.id }}</p>
+        <p>交易时间：{{ trans.time|date:'Y 年 M d 日 H:i' }}</p>
+        <p>货物流向：{{ trans.in_out }}</p>
+        <p>交易数量：(本){{ trans.amount }}</p>
+        <p>成交价格：{{ trans.cost }}</p>
+        <p>付款状态：{{ trans.paid }}</p>
+        </li>
+        {% empty %}
+        <li>
+            没有了，没有此人负责的订单了！
+        </li>
+        {% endfor %}
+    </div>
+
+
+
+{% endblock %}

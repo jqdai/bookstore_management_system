@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>抽象圣经交易记录检索结果</h1>
+
+    {% if selected_trans %}
+    <ul>
+
+      {% for tran in selected_trans %}
+      <li>
+        <p>交易单号：{{ tran.id }}</p>
+        <p>商品信息：<a href="{{ tran.book.get_absolute_url }}">{{ tran.book }}</a></p>
+        <p>交易时间：{{ tran.time|date:'Y 年 M d 日 H:i' }}</p>
+        <p>进货出货：{{ tran.in_out }}</p>
+        <p>交易数量：(本){{ tran.amount }}</p>
+        <p>成交价格：{{ tran.cost }}</p>
+        <p>订单状态：{{ tran.paid }}</p>
+        <p>负责人：{{ tran.ruler }}</p>
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>居然没人管抽象圣经？在？道个歉？</p>
+    {% endif %}       
+{% endblock %}

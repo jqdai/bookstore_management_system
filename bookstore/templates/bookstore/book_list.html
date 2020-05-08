@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1">
+                <form method="POST" role="form" class="form-horizontal">
+                    {% csrf_token %}
+                    <h2 class="form-signin-heading text-center">检索抽象圣经</h2>
+
+                    <div class="form-group">
+                        <label for="id_ISBN" class="col-md-3 control-label">ISBN：</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="id_ISBN" name="ISBN" placeholder="请输入13位纯数字">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_name" class="col-md-3 control-label">书名：</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="id_name" name="name" placeholder="书名长度不得超过50个字符">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_author" class="col-md-3 control-label">作者：</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="author" id="id_author" placeholder="多位作者间用中文逗号隔开">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_language" class="col-md-3 control-label">语言：</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="language" id="id_language">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_publisher" class="col-md-3 control-label">出版社：</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="publisher" id="id_publisher">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-4 col-md-offset-4">
+                            <button class="btn btn btn-primary btn-block" type="submit">搜索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <p>若点击“搜索”后仍返回此页面，则表示检索失败。请确保填写格式符合上述要求！</p>
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+
+    <h1>抽象圣经一览表</h1>
+    {% if all_books %}
+    <ul>
+
+      {% for book in all_books %}
+      <li>
+        <a href="{{ book.get_absolute_url }}">{{ book.name }}</a> ({{book.author}})
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>没有了，没有抽象圣经了！</p>
+    {% endif %}
+
+
+{% endblock %}

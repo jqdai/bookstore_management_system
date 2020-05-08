@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>欢迎光临抽象图书馆</h1>
+
+  <p>欢迎光临<em>抽象图书馆</em>！本店只做亏本的生意，如果你信了，辣你是真滴牛批！</p>
+
+<h2>本店基本信息</h2>
+  <p>本店战绩：</p>
+  <ul>
+    <li><strong>抽象圣经种类：</strong> {{ num_books }}</li>
+    <li><strong>抽象圣经历史总成交量：</strong> {{ num_transactions }}</li>
+  </ul>
+
+  <p>您已访问此页面{{ num_visits }}次。</p>
+
+{% endblock %}

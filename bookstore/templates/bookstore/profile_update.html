@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="body">
+    <h1>编辑用户信息</h1>
+        <h2 class="title-style">用户名：{{ user.username }}</h2>
+        <h2 class="title-style">可以编辑以下信息</h2>
+        <div class="form-wrapper">
+            <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="fieldWrapper">
+                    {{ field.errors }}
+                    {{ field.label_tag }}{{ field }}
+                    {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="button-wrapper submit">
+                <input type="submit" value="提交">
+                <input type="reset" value="重置">
+            </div>
+            </form>
+        </div>
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+
+    <li><a href="{% url 'profile' user.id %}">取消编辑</a></li>
+
+    </div>
+
+
+{% endblock %}

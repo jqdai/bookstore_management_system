@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>《{{ book.name }}》</h1>
+    <p><strong>作者：</strong> {{ book.author }}</p>
+    <p><strong>ISBN：</strong> {{ book.ISBN }}</p>
+    <p><strong>语言：</strong> {{ book.language }}</p>
+    <p><strong>出版社：</strong> {{ book.publisher }}</p>
+    <p><strong>库存量：</strong> {{ book.inventory }}</p>
+    <p><strong>售价：</strong> {{ book.price }}</p>
+
+    <li><a href="{% url 'editbook' book.id %}">编辑信息</a></li>
+    <li><a href="{% url 'addbook' book.id %}">补充库存</a></li>
+    <li><a href="{% url 'sellbook' book.id %}">销售图书</a></li>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>相关交易记录：</h4>
+
+    {% for trans in related_transaction %}
+    <li>
+      <p>交易单号：{{ trans.id }}</p>
+      <p>交易时间：{{ trans.time|date:'Y 年 M d 日 H:i' }}</p>
+      <p>货物流向：{{ trans.in_out }}</p>
+      <p>交易数量：(本){{ trans.amount }}</p>
+      <p>成交价格：{{ trans.cost }}</p>
+      <p>付款状态：{{ trans.paid }}</p>
+      <p>负责人：{{ trans.ruler }}</p>
+    </li>
+    {% empty %}
+        <li>
+            暂无此书的交易记录！
+        </li>
+    {% endfor %}
+  </div>
+{% endblock %}
