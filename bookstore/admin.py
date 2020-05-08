@@ -29,8 +29,8 @@ class TransactionInline(admin.TabularInline):
 
 @admin.register(Publisher)
 class PublisherAdmin(admin.ModelAdmin):
-    list_display = ('name', 'country')
-    list_filter = ('name', 'country')
+    list_display = ('name', )
+    list_filter = ('name', )
 
 
 @admin.register(Book)

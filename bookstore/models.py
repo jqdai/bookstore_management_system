@@ -30,15 +30,17 @@ class Admin(models.Model):
 
 class Publisher(models.Model):
     name = models.CharField(max_length=30)
-    country = models.CharField(max_length=10)
 
     class Meta:
         verbose_name = '出版社'
         verbose_name_plural = '出版社'
-        ordering = ['name', 'country']
+        ordering = ['name', ]
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('pub_books', args=[str(self.id)])
 
 
 class Book(models.Model):
@@ -50,7 +52,7 @@ class Book(models.Model):
     name = models.CharField(max_length=50, verbose_name='书名')
     language = models.CharField(max_length=10, verbose_name='语言', default='汉语')
     author = models.CharField(max_length=30, verbose_name='作者')
-    publisher = models.CharField(max_length=30, verbose_name='出版社')
+    publisher = models.ForeignKey(Publisher, on_delete=models.DO_NOTHING, verbose_name='出版社')
     price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='售价', validators=
                                 [vl.MaxValueValidator(999.99, message='最高999.99元'),
                                  vl.MinValueValidator(0.01, message='最低0.01元')])
@@ -62,7 +64,7 @@ class Book(models.Model):
         ordering = ['name', 'author', 'publisher']
 
     def __str__(self):
-        return '《' + self.name + '》，' + self.author + '，' + self.ISBN + '，' + self.publisher
+        return '《' + self.name + '》，' + self.author + '，' + self.ISBN + '，' + self.publisher.name
 
     def get_absolute_url(self):
         return reverse('related_transaction', args=[str(self.id)])

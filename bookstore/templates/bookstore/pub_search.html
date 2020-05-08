@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>抽象圣经出版社检索结果</h1>
+
+    {% if selected_pubs %}
+    <ul>
+
+      {% for pub in selected_pubs %}
+      <li>
+        <p>商品信息：<a href="{{ pub.get_absolute_url }}">{{ pub.name }}</a></p>
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>居然没人出版抽象圣经？在？道个歉？</p>
+    {% endif %}       
+{% endblock %}

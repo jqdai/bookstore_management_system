@@ -42,10 +42,11 @@
 - 图示模式新增语言属性，并可通过该属性检索
 - 建立 author 模式
 - 利用 split 和 __contain 处理一本书多个作者问题
+- 利用 Publisher 模式重构 Book 模式，利用 ForeignKey 处理出版社问题
 
 ### 有待完成的功能
 
-- 利用 Author 模式重构 Admin 模式，利用 ManyToMany 处理一本书多个作者问题
+- 利用 Author 模式重构 Book 模式，利用 ManyToMany 处理一本书多个作者问题
 - 使用 Bootstrap 改进前端网页
 
 ## 网页索引

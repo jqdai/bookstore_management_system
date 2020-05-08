@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.contrib import messages
 
 from .forms import *
-from .models import Admin, Book, Transaction
+from .models import *
 from django.views import generic
 
 
@@ -45,7 +45,8 @@ def book_list(request):
             aname = form.cleaned_data['author']
             lang = form.cleaned_data['language']
             pub = form.cleaned_data['publisher']
-            selected_books = Book.objects.all()
+            publisher = Publisher.objects.get(name=pub)
+            selected_books = publisher.book_set.order_by('name')
             if isbn:
                 selected_books = selected_books.filter(ISBN=isbn)
             if bname:
@@ -153,12 +154,16 @@ def new_book(request):
     if request.method == 'POST':
         form = NewBookForm(request.POST)
         if form.is_valid():
+            publisher = Publisher.objects.get(name=form.cleaned_data['publisher'])
+            if not publisher:
+                publisher = Publisher(name=form.cleaned_data['publisher'])
+                publisher.save()
             new_book = Book(
                 ISBN=form.cleaned_data['ISBN'],
                 name=form.cleaned_data['name'],
                 author=form.cleaned_data['author'],
                 lang=form.cleaned_data['language'],
-                publisher=form.cleaned_data['publisher'],
+                publisher=publisher,
                 price=form.cleaned_data['price'],
                 inventory=form.cleaned_data['amount'],
             )
@@ -166,7 +171,7 @@ def new_book(request):
 
             new_trans = Transaction(
                 in_out='进货',
-                book=Book.objects.get(name=form.cleaned_data['name'], author=form.cleaned_data['author']),
+                book=new_book,
                 ruler=user,
                 cost=form.cleaned_data['cost'],
                 amount=form.cleaned_data['amount'],
@@ -270,10 +275,14 @@ def edit_book(request, bid):
     if request.method == 'POST':
         form = EditBookForm(request.POST)
         if form.is_valid():
+            publisher = Publisher.objects.get(name=form.cleaned_data['publisher'])
+            if not publisher:
+                publisher = Publisher(name=form.cleaned_data['publisher'])
+                publisher.save()
             targ.name = form.cleaned_data['name']
             targ.author = form.cleaned_data['author']
             targ.language = form.cleaned_data['language']
-            targ.publisher = form.cleaned_data['publisher']
+            targ.publisher = publisher
             targ.price = form.cleaned_data['price']
             targ.save()
             messages.error(request, '修改成功')
@@ -317,3 +326,55 @@ def payment(request):
                 messages.error(request, '该订单不存在，或已付款或退货')
     ct = {'form': PayForm(), 'up_trans': unpaid_transactions, 'user': user}
     return render(request, 'bookstore/payment.html', context=ct)
+
+
+@login_required
+def publishers(request):
+    '''
+    查看所有出版社，也可根据一定要求检索
+    :param request:
+    :return:
+    '''
+    pubs = Publisher.objects.all()
+    ct = {'pubs': pubs}
+    if request.method == 'POST':
+        form = PubSearchForm(request.POST)
+        if form.is_valid():
+            pub_name = form.cleaned_data['name']
+            selected_pubs = Publisher.objects.filter(name__contains=pub_name)
+            context = {'selected_pubs': selected_pubs}
+            messages.error(request, '检索成功！')
+            return render(request, 'bookstore/pub_search.html', context=context)
+    return render(request, 'bookstore/publisher_list.html', context=ct)
+
+
+@login_required
+def pub_books(request, pid):
+    '''
+    展示出版社基本信息与所出版图书，可以修改基本信息
+    :param request:
+    :param pid:
+    :return:
+    '''
+    publisher = get_object_or_404(Publisher, id=pid)
+    published_books = publisher.book_set.filter(publisher=publisher)
+    return render(request, 'bookstore/pub_books.html', {'publisher': publisher, 'published_books': published_books})
+
+
+@login_required
+def pub_update(request, pid):
+    user = request.user
+    publisher = get_object_or_404(Publisher, id=pid)
+    if request.method == 'POST':
+        form = PubSearchForm(request.POST)
+        if form.is_valid():
+            publisher.name = form.cleaned_data['name']
+            publisher.save()
+            messages.error(request, '修改成功')
+            return HttpResponseRedirect(reverse('profile', args=[pid]))
+        else:
+            messages.error(request, '修改失败，请重试。注意务必按照规定的格式填写信息！')
+    else:
+        default_data = {'name': publisher.name, }
+        form = PubSearchForm(default_data)
+    return render(request, 'bookstore/profile_update.html', {'form': form, 'user': user})

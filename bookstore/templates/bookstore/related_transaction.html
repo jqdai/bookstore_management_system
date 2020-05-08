@@ -5,7 +5,7 @@
     <p><strong>作者：</strong> {{ book.author }}</p>
     <p><strong>ISBN：</strong> {{ book.ISBN }}</p>
     <p><strong>语言：</strong> {{ book.language }}</p>
-    <p><strong>出版社：</strong> {{ book.publisher }}</p>
+    <p><strong>出版社：</strong> {{ book.publisher.name }}</p>
     <p><strong>库存量：</strong> {{ book.inventory }}</p>
     <p><strong>售价：</strong> {{ book.price }}</p>
 
@@ -19,6 +19,7 @@
     {% for trans in related_transaction %}
     <li>
       <p>交易单号：{{ trans.id }}</p>
+      <p>商品信息：{{ trans.book }}</p>
       <p>交易时间：{{ trans.time|date:'Y 年 M d 日 H:i' }}</p>
       <p>货物流向：{{ trans.in_out }}</p>
       <p>交易数量：(本){{ trans.amount }}</p>

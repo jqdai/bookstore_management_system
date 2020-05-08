@@ -82,3 +82,9 @@ class PayForm(forms.Form):
     states = (('pay', '已付款'), ('ret', '已退货'))
     tid = forms.IntegerField(label='订单编号')
     paid = forms.CharField(label='付款状态', widget=forms.widgets.Select(choices=states))
+
+
+class PubSearchForm(forms.Form):
+    name = forms.CharField(label='出版社名称', max_length=30, required=False)
+
+

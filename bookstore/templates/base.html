@@ -17,6 +17,7 @@
           <li><a href="{% url 'index' %}">主页</a></li>
           <li><a href="{% url 'books' %}">图书列表</a></li>
           <li><a href="{% url 'transactions' %}">交易记录列表</a></li>
+          <li><a href="{% url 'publishers' %}">出版社列表</a></li>
       </ul>
       {% if user.is_authenticated %}
         <li>当前用户: {{ user.get_username }}</li>
