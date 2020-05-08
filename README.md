@@ -68,7 +68,7 @@
 - accounts/login 登录
 - accounts/password_reset 通过邮件重置密码
 
-## 说明
+## 数据库设计说明
 
 - 不设置注册功能。本站点都是管理员，普通管理员账号由超级管理员直接配置，不需要注册功能
 - 重置密码的邮件发送至终端（EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'）
@@ -80,6 +80,11 @@
 - 主页显示访问主页的次数（关闭页面不归零，断开服务器链接不归零）
 - Transactions.book = models.ForeignKey(Book)
 - Book.publisher = models.ForeignKey(Publisher)
+
+## 使用说明
+
+- 进入项目，在 PowerShel 中输入指令 'py manage.py runserver', 进入网页 127.0.0.1:8000 即可使用
+- 提供超级管理员账号（用户名:djq 密码:12345678）
 
 ## 贡献者
 
