@@ -62,9 +62,9 @@
 - bookstore/transactions/payment 订单付款和退货
 - bookstore/user/<int:uid>/profile 查看用户个人信息
 - bookstore/user/<int:uid>/profile/update 修改用户个人信息
-- bookstore/publishers
-- bookstore/publishers/<int:pid>
-- bookstore/publishers/<int:pid>/update
+- bookstore/publishers 出版社列表
+- bookstore/publishers/<int:pid> 查看出版社信息
+- bookstore/publishers/<int:pid>/update 出版出版社信息
 - accounts/login 登录
 - accounts/password_reset 通过邮件重置密码
 
@@ -78,6 +78,8 @@
 - 一本书有多个作者时，多个作者之间用一个中文逗号隔开
 - 按时间检索交易记录时用日期选择表选择时间（推荐使用 Chrome 浏览器，弱智 IE 跳不出日期选择表）
 - 主页显示访问主页的次数（关闭页面不归零，断开服务器链接不归零）
+- Transactions.book = models.ForeignKey(Book)
+- Book.publisher = models.ForeignKey(Publisher)
 
 ## 贡献者
 
