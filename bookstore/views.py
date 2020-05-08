@@ -189,7 +189,7 @@ def new_book(request):
                 paid='已付款',
             )
             new_trans.save()
-            messages.error(request, '新书上架成功')
+            messages.success(request, '新书上架成功')
             return HttpResponseRedirect(reverse('transactions'))
         else:
             messages.error(request, '信息填写有误，请重试')
@@ -267,7 +267,7 @@ def sell_book(request, bid):
                     paid=True,
                 )
                 new_trans.save()
-                messages.error(request, '出售成功')
+                messages.success(request, '出售成功')
                 return HttpResponseRedirect(reverse('related_transaction', args=[bid]))
             else:
                 messages.error(request, '交易量超过库存，请重试')
