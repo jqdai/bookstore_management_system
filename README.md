@@ -39,7 +39,7 @@
 - [x] 利用 Publisher 模式重构 Book 模式，利用 ForeignKey 处理出版社问题
 - [ ] 利用 Author 模式重构 Book 模式，利用 ManyToMany 处理一本书多个作者问题
 - [ ] 使用 Bootstrap / MDUI 改进前端网页
-- [ ] 提示弹窗有延迟
+- [ ] 及时有效的提示弹窗
 - [ ] 在图书信息栏显示图书所有作者
 
 ## 网页索引
