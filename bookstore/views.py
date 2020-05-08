@@ -343,7 +343,6 @@ def publishers(request):
             pub_name = form.cleaned_data['name']
             selected_pubs = Publisher.objects.filter(name__contains=pub_name)
             context = {'selected_pubs': selected_pubs}
-            messages.error(request, '检索成功！')
             return render(request, 'bookstore/pub_search.html', context=context)
     return render(request, 'bookstore/publisher_list.html', context=ct)
 

@@ -62,6 +62,9 @@
 - bookstore/transactions/payment 订单付款和退货
 - bookstore/user/<int:uid>/profile 查看用户个人信息
 - bookstore/user/<int:uid>/profile/update 修改用户个人信息
+- bookstore/publishers
+- bookstore/publishers/<int:pid>
+- bookstore/publishers/<int:pid>/update
 - accounts/login 登录
 - accounts/password_reset 通过邮件重置密码
 
