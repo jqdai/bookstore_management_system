@@ -22,7 +22,7 @@
 - 本项目共设计有 5 个模式: Admin, Publisher, Author, Book, Transaction
 - ER 图如下图所示（下图可在 github 中直接查看。若想本地查看，请打开本文件夹下的“中期实验ER图.JPG”文件）
 
-![image](https://github.com/jqdai/bookstore_management_system/blob/master/%E5%9B%BE%E7%89%87/E R.JPG)
+![image](https://github.com/jqdai/bookstore_management_system/blob/master/%E5%9B%BE%E7%89%87/ER.JPG)
 
 ### 各模式功能与属性说明
 
