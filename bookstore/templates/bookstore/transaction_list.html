@@ -8,6 +8,7 @@
                 <form method="POST" role="form" class="form-horizontal">
                     {% csrf_token %}
                     <h2 class="form-signin-heading text-center">检索抽象圣经交易记录</h2>
+                    <p><strong>注意：</strong>起始时间和结束时间都是必填项；日期视作当天00:00</p>
 
                     <div class="form-group">
                         <label for="id_start_time" class="col-md-3 control-label">起始时间：</label>
