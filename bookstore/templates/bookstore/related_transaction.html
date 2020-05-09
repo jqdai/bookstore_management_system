@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>《{{ book.name }}》</h1>
-    <p><strong>作者：</strong> {{ book.author }}</p>
+    <p><strong>作者：</strong> {{ book.get_author }}</p>
     <p><strong>ISBN：</strong> {{ book.ISBN }}</p>
     <p><strong>语言：</strong> {{ book.language }}</p>
     <p><strong>出版社：</strong> {{ book.publisher.name }}</p>

@@ -16,7 +16,7 @@
                     <h1 class="form-signin-heading text-center">销售图书</h1>
                     <p>交易对象：</p>
                     <p><strong>书名：</strong> {{ book.name }}</p>
-                    <p><strong>作者：</strong> {{ book.author }}</p>
+                    <p><strong>作者：</strong> {{ book.get_author }}</p>
                     <p><strong>ISBN:</strong> {{ book.ISBN }}</p>
                     <p><strong>出版社:</strong> {{ book.publisher }}</p>
                     <p><strong>库存量:</strong> {{ book.inventory }}</p>

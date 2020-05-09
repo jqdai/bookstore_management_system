@@ -34,7 +34,7 @@
 
       {% for pub in pubs %}
       <li>
-        <p>出版社名称：<a href="{{ tran.book.get_absolute_url }}">{{ tran.book }}</a></p>
+        <p><a href="{{ pub.get_absolute_url }}">{{ pub.name }}</a></p>
       </li>
       {% endfor %}
 

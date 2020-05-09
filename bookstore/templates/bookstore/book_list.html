@@ -69,10 +69,10 @@
 
       {% for book in all_books %}
       <li>
-        <a href="{{ book.get_absolute_url }}">{{ book.name }}</a> ({{book.author}})
+        <a href="{{ book.get_absolute_url }}">{{ book.name }}</a> ({{ book.get_author }})
       </li>
       {% endfor %}
-    
+
     </ul>
     {% else %}
       <p>没有了，没有抽象圣经了！</p>

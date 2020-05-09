@@ -245,8 +245,7 @@ def sell_book(request, bid):
     :param bid:
     :return:
     '''
-    user = request.user
-    admin = Admin.objects.get(user=user)
+    admin = Admin.objects.get(user=request.user)
     targ = Book.objects.get(id=bid)
     if request.method == 'POST':
         form = SellForm(request.POST)
@@ -271,7 +270,7 @@ def sell_book(request, bid):
                 return HttpResponseRedirect(reverse('related_transaction', args=[bid]))
             else:
                 messages.error(request, '交易量超过库存，请重试')
-    return render(request, 'bookstore/sell_book.html', {'form': SellForm(), 'book': targ, 'user': user})
+    return render(request, 'bookstore/sell_book.html', {'form': SellForm(), 'book': targ, 'admin':admin})
 
 
 @login_required
@@ -287,12 +286,26 @@ def edit_book(request, bid):
     if request.method == 'POST':
         form = EditBookForm(request.POST)
         if form.is_valid():
-            publisher = Publisher.objects.get(name=form.cleaned_data['publisher'])
-            if not publisher:
+            publishers = Publisher.objects.filter(name=form.cleaned_data['publisher'])
+            if not publishers:
                 publisher = Publisher(name=form.cleaned_data['publisher'])
                 publisher.save()
+            else:
+                publisher = publishers[0]
+
+            # 修改 author 时，先清除原有的多对多关联，再重新加
+            targ.author.clear()
+            aname_list = form.cleaned_data['author'].split('，')
+            for name in aname_list:
+                au = Author.objects.filter(name__contains=name)
+                if au:
+                    targ.author.add(au[0])
+                else:
+                    new_author = Author(name=name)
+                    new_author.save()
+                    targ.author.add(new_author)
+
             targ.name = form.cleaned_data['name']
-            targ.author = form.cleaned_data['author']
             targ.language = form.cleaned_data['language']
             targ.publisher = publisher
             targ.price = form.cleaned_data['price']
@@ -302,7 +315,7 @@ def edit_book(request, bid):
         else:
             messages.error(request, '修改失败，请重试。注意务必按照规定的格式填写信息！')
     else:
-        default_data = {'name': targ.name, 'author': targ.author, 'publisher': targ.publisher,
+        default_data = {'name': targ.name, 'author': targ.get_author(), 'publisher': targ.publisher,
                         'language': targ.language, 'price': targ.price}
         form = EditBookForm(default_data)
     return render(request, 'bookstore/edit_book.html', {'form': form, 'book': targ, 'user': user})

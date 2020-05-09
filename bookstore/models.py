@@ -79,10 +79,13 @@ class Book(models.Model):
         ordering = ['name', 'publisher']
 
     def __str__(self):
-        return '《' + self.name + '》，' + self.ISBN + '，' + self.publisher.name
+        return '《' + self.name + '》，' + self.get_author() + '，' + self.ISBN + '，' + self.publisher.name
 
     def get_absolute_url(self):
         return reverse('related_transaction', args=[str(self.id)])
+
+    def get_author(self):
+        return '，'.join([a.name for a in self.author.order_by('name')])
 
 
 class Transaction(models.Model):
