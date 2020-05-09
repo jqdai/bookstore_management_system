@@ -112,6 +112,7 @@ class Transaction(models.Model):
     def __str__(self):
         rt = ''
         rt += 'Book name: ' + self.book.name
+        rt += 'Author' + self.book.get_author()
         rt += '\nISBN: ' + self.book.ISBN
         rt += '\nDate: ' + str(self.time)
         rt += '\n' + self.paid

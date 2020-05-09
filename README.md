@@ -56,7 +56,10 @@
 - bookstore/user/<int:uid>/profile/update 修改用户个人信息
 - bookstore/publishers 出版社列表
 - bookstore/publishers/<int:pid> 查看出版社信息
-- bookstore/publishers/<int:pid>/update 出版出版社信息
+- bookstore/publishers/<int:pid>/update 修改出版社信息
+- bookstore/author 作者列表
+- bookstore/authors/<int:aid> 查看作者信息
+- bookstore/authors/<int:aid>/update 修改作者信息
 - accounts/login 登录
 - accounts/password_reset 通过邮件重置密码
 

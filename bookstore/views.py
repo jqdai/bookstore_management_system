@@ -131,8 +131,8 @@ def profile_update(request, uid):
             admin.name = form.cleaned_data['name']
             admin.age = form.cleaned_data['age']
             admin.gender = form.cleaned_data['gender']
-            admin.phone = form.cleaned_data['phone']
             admin.address = form.cleaned_data['address']
+            admin.phone = form.cleaned_data['phone']
             admin.save()
             return HttpResponseRedirect(reverse('profile', args=[user.id]))
     else:
@@ -356,7 +356,7 @@ def payment(request):
 @login_required
 def publishers(request):
     '''
-    查看所有出版社，也可根据一定要求检索
+    查看所有出版社，也可根据名称检索
     :param request:
     :return:
     '''
@@ -375,7 +375,7 @@ def publishers(request):
 @login_required
 def pub_books(request, pid):
     '''
-    展示出版社基本信息与所出版图书，可以修改基本信息
+    展示出版社信息与所出版图书，可以修改信息
     :param request:
     :param pid:
     :return:
@@ -387,6 +387,12 @@ def pub_books(request, pid):
 
 @login_required
 def pub_update(request, pid):
+    '''
+    修改出版社信息
+    :param request:
+    :param pid:
+    :return:
+    '''
     publisher = get_object_or_404(Publisher, id=pid)
     if request.method == 'POST':
         form = PubUpdateForm(request.POST)
@@ -405,6 +411,11 @@ def pub_update(request, pid):
 
 @login_required
 def authors(request):
+    '''
+    查看所有作者，也可根据姓名检索
+    :param request:
+    :return:
+    '''
     all_authors = Author.objects.all()
     selected_authors = all_authors
     ct = {'all_authors': all_authors}
@@ -422,7 +433,7 @@ def authors(request):
 @login_required
 def author_books(request, aid):
     '''
-    展示出版社基本信息与所出版图书，可以修改基本信息
+    展示作者个人信息与所作图书，可以修改个人信息
     :param request:
     :param pid:
     :return:
@@ -434,6 +445,12 @@ def author_books(request, aid):
 
 @login_required
 def author_update(request, aid):
+    '''
+    修改作者个人信息
+    :param request:
+    :param aid:
+    :return:
+    '''
     author = get_object_or_404(Author, id=aid)
     if request.method == 'POST':
         form = AuthorUpdateForm(request.POST)
@@ -448,6 +465,5 @@ def author_update(request, aid):
         default_data = {'name': author.name, }
         form = AuthorUpdateForm(default_data)
     return render(request, 'bookstore/author_update.html', {'form': form, 'author': author})
-
 
 
