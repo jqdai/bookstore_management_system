@@ -61,7 +61,9 @@ def book_list(request):
             if lang:
                 selected_books = selected_books.filter(language=lang)
             if cate:
-                selected_books = selected_books.filter(category__name__contains=cate)
+                cate_list = cate.split(',')
+                for c in cate_list:
+                    selected_books = selected_books.filter(category__name__contains=c)
             context = {'selected_books': selected_books}
             return render(request, 'bookstore/search.html', context=context)
     return render(request, 'bookstore/book_list.html', context=ct)
@@ -167,22 +169,17 @@ def new_book(request):
                 publisher.save()
             else:
                 publisher = pubtemp[0]
-            catetemp = Category.objects.filter(name=form.cleaned_data['category'])
-            if not catetemp:
-                category = Category(name=form.cleaned_data['category'])
-                category.save()
-            else:
-                category = catetemp[0]
+
             new_book = Book(
                 ISBN=form.cleaned_data['ISBN'],
                 name=form.cleaned_data['name'],
                 language=form.cleaned_data['language'],
                 publisher=publisher,
-                category=category,
                 price=form.cleaned_data['price'],
                 inventory=form.cleaned_data['amount'],
             )
             new_book.save()
+
             author_list = form.cleaned_data['author'].split('，')
             for aname in author_list:
                 auth_temp = Author.objects.filter(name=aname)
@@ -192,6 +189,16 @@ def new_book(request):
                 else:
                     new_author = auth_temp[0]
                 new_book.author.add(new_author)
+
+            category_list = form.cleaned_data['category'].split('，')
+            for cname in category_list:
+                cat_temp = Category.objects.filter(name=cname)
+                if not cat_temp:
+                    new_category = Category(name=cname)
+                    new_category.save()
+                else:
+                    new_category = cat_temp[0]
+                new_book.author.add(new_category)
 
             new_trans = Transaction(
                 in_out='进货',
@@ -306,14 +313,8 @@ def edit_book(request, bid):
                 publisher.save()
             else:
                 publisher = publishers[0]
-            categories = Category.objects.filter(name=form.cleaned_data['category'])
-            if not categories:
-                category = Category(name=form.cleaned_data['category'])
-                category.save()
-            else:
-                category = categories[0]
 
-            # 修改 author 时，先清除原有的多对多关联，再重新加
+            # 修改 author、category 时，先清除原有的多对多关联，再重新加
             targ.author.clear()
             aname_list = form.cleaned_data['author'].split('，')
             for name in aname_list:
@@ -325,10 +326,20 @@ def edit_book(request, bid):
                     new_author.save()
                     targ.author.add(new_author)
 
+            targ.category.clear()
+            cname_list = form.cleaned_data['category'].split('，')
+            for name in cname_list:
+                ca = Category.objects.filter(name__contains=name)
+                if ca:
+                    targ.category.add(ca[0])
+                else:
+                    new_category = Category(name=name)
+                    new_category.save()
+                    targ.author.add(new_category)
+
             targ.name = form.cleaned_data['name']
             targ.language = form.cleaned_data['language']
             targ.publisher = publisher
-            targ.category = category
             targ.price = form.cleaned_data['price']
             targ.save()
             messages.error(request, '修改成功')
@@ -337,7 +348,7 @@ def edit_book(request, bid):
             messages.error(request, '修改失败，请重试。注意务必按照规定的格式填写信息！')
     else:
         default_data = {'name': targ.name, 'author': targ.get_author(), 'publisher': targ.publisher,
-                        'language': targ.language, 'category': targ.category, 'price': targ.price}
+                        'language': targ.language, 'category': targ.get_category(), 'price': targ.price}
         form = EditBookForm(default_data)
     return render(request, 'bookstore/edit_book.html', {'form': form, 'book': targ, 'user': user})
 
@@ -496,12 +507,14 @@ def categories(request):
     :return:
     '''
     cats = Category.objects.all()
+    selected_cats = cats
     ct = {'cats': cats}
     if request.method == 'POST':
         form = CatSearchForm(request.POST)
         if form.is_valid():
             cat_name = form.cleaned_data['name']
-            selected_cats = Category.objects.filter(name__contains=cat_name)
+            if cat_name:
+                selected_cats = cats.filter(name__contains=cat_name)
             context = {'selected_cats': selected_cats}
             return render(request, 'bookstore/cat_search.html', context=context)
     return render(request, 'bookstore/category_list.html', context=ct)

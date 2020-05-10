@@ -87,12 +87,12 @@ class Book(models.Model):
                                 [vl.MaxValueValidator(999.99, message='最高999.99元'),
                                  vl.MinValueValidator(0.01, message='最低0.01元')])
     inventory = models.IntegerField(verbose_name='当前库存', validators=[vl.MinValueValidator(0)], default=0)
-    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, verbose_name='类别')
+    category = models.ManyToManyField(Category, verbose_name='类别')
 
     class Meta:
         verbose_name = '图书信息'
         verbose_name_plural = '图书信息'
-        ordering = ['name', 'publisher', 'category']
+        ordering = ['name', 'publisher', ]
 
     def __str__(self):
         return '《' + self.name + '》，' + self.get_author() + '，' + self.ISBN + '，' + self.publisher.name
@@ -102,6 +102,9 @@ class Book(models.Model):
 
     def get_author(self):
         return '，'.join([a.name for a in self.author.order_by('name')])
+
+    def get_category(self):
+        return '，'.join([c.name for c in self.category.order_by('name')])
 
 
 class Transaction(models.Model):
