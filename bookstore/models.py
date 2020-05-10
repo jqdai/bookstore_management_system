@@ -88,6 +88,7 @@ class Book(models.Model):
                                  vl.MinValueValidator(0.01, message='最低0.01元')])
     inventory = models.IntegerField(verbose_name='当前库存', validators=[vl.MinValueValidator(0)], default=0)
     category = models.ManyToManyField(Category, verbose_name='类别')
+    summary = models.CharField(max_length=100, verbose_name='简介', default='懒狗管理员没有留下任何摘要，是不是可以爬了？')
 
     class Meta:
         verbose_name = '图书信息'

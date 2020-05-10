@@ -9,6 +9,7 @@
     <p><strong>类型：</strong> {{ book.get_category }}</p>
     <p><strong>库存量：</strong> {{ book.inventory }}</p>
     <p><strong>售价：</strong> {{ book.price }}</p>
+    <p><strong>简介：</strong>{{ book.summary }}</p>
 
     <li><a href="{% url 'editbook' book.id %}">编辑信息</a></li>
     <li><a href="{% url 'addbook' book.id %}">补充库存</a></li>

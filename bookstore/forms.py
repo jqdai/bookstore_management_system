@@ -29,6 +29,7 @@ class NewBookForm(forms.Form):
     cost = forms.DecimalField(label='进价', max_value=999.99, min_value=0.01, max_digits=5, decimal_places=2)
     price = forms.DecimalField(label='零售价', max_value=999.99, min_value=0.01, max_digits=5, decimal_places=2)
     amount = forms.IntegerField(label='数量', min_value=1)
+    summary = forms.CharField(label='简介', max_length=100)
 
 
 class SellForm(forms.Form):
@@ -78,6 +79,7 @@ class EditBookForm(forms.Form):
     language = forms.CharField(label='作者', max_length=10)
     price = forms.DecimalField(label='零售价', max_value=999.99, min_value=0.01, max_digits=5, decimal_places=2)
     category = forms.CharField(label='类型', max_length=10)
+    summary = forms.CharField(label='简介', max_length=100)
 
 
 class PayForm(forms.Form):

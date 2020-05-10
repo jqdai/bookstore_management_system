@@ -177,6 +177,7 @@ def new_book(request):
                 publisher=publisher,
                 price=form.cleaned_data['price'],
                 inventory=form.cleaned_data['amount'],
+                summary=form.cleaned_data['summary'],
             )
             new_book.save()
 
@@ -341,6 +342,7 @@ def edit_book(request, bid):
             targ.language = form.cleaned_data['language']
             targ.publisher = publisher
             targ.price = form.cleaned_data['price']
+            targ.summary = form.cleaned_data['summary']
             targ.save()
             messages.error(request, '修改成功')
             return HttpResponseRedirect(reverse('related_transaction', args=[bid]))
@@ -348,7 +350,8 @@ def edit_book(request, bid):
             messages.error(request, '修改失败，请重试。注意务必按照规定的格式填写信息！')
     else:
         default_data = {'name': targ.name, 'author': targ.get_author(), 'publisher': targ.publisher,
-                        'language': targ.language, 'category': targ.get_category(), 'price': targ.price}
+                        'language': targ.language, 'category': targ.get_category(), 'price': targ.price,
+                        'summary': targ.summary}
         form = EditBookForm(default_data)
     return render(request, 'bookstore/edit_book.html', {'form': form, 'book': targ, 'user': user})
 
