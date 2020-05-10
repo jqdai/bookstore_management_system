@@ -491,7 +491,7 @@ def author_update(request, aid):
 @login_required
 def categories(request):
     '''
-    查看所有类型
+    查看所有类型，也可根据名称检索
     :param request:
     :return:
     '''
