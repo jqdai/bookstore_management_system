@@ -3,14 +3,14 @@
 
 {% block content %}
     <div class="body">
-        <h2 class="title-style">出版社基本信息</h2>
+        <h2>出版社基本信息</h2>
         <ul class="b1">
         <li>出版社名称：{{ publisher.name }}</li>
         </ul>
 
         <a href="{% url 'pub_update' publisher.id %}" class="m1">编辑信息</a>
 
-        <h2 class="title-style">出版图书</h2>
+        <h2>出版图书</h2>
         <ul class="b1">
         {% for book in published_books %}
         <li>

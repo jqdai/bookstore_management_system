@@ -3,8 +3,8 @@
 {% block content %}
     <div class="body">
     <h1>编辑用户信息</h1>
-        <h2 class="title-style">用户名：{{ user.username }}</h2>
-        <h2 class="title-style">可以编辑以下信息</h2>
+        <h2>用户名：{{ user.username }}</h2>
+        <p>可以编辑以下信息</p>
         <div class="form-wrapper">
             <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
