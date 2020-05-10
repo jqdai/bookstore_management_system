@@ -29,7 +29,7 @@ class Admin(models.Model):
 
 
 class Publisher(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, verbose_name='出版社')
 
     class Meta:
         verbose_name = '出版社'
@@ -41,6 +41,21 @@ class Publisher(models.Model):
 
     def get_absolute_url(self):
         return reverse('pub_books', args=[str(self.id)])
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=10, verbose_name='类别')
+
+    class Meta:
+        verbose_name = '类别'
+        verbose_name_plural = '类别'
+        ordering = ['name', ]
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('cat_books', args=[str(self.id)])
 
 
 class Author(models.Model):
@@ -72,11 +87,12 @@ class Book(models.Model):
                                 [vl.MaxValueValidator(999.99, message='最高999.99元'),
                                  vl.MinValueValidator(0.01, message='最低0.01元')])
     inventory = models.IntegerField(verbose_name='当前库存', validators=[vl.MinValueValidator(0)], default=0)
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, verbose_name='类别')
 
     class Meta:
         verbose_name = '图书信息'
         verbose_name_plural = '图书信息'
-        ordering = ['name', 'publisher']
+        ordering = ['name', 'publisher', 'category']
 
     def __str__(self):
         return '《' + self.name + '》，' + self.get_author() + '，' + self.ISBN + '，' + self.publisher.name

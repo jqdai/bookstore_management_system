@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="body">
-    <h1>编辑出版社信息</h1>
+    <h1>编辑类型信息</h1>
         <h2 class="title-style">可以编辑以下信息</h2>
         <div class="form-wrapper">
             <form action="" method="post" enctype="multipart/form-data">
@@ -32,7 +32,7 @@
     </script>
     {% endif %}
 
-    <li><a href="{% url 'pub_books' publisher.id %}">取消编辑</a></li>
+    <li><a href="{% url 'cat_books' cat.id %}">取消编辑</a></li>
 
     </div>
 

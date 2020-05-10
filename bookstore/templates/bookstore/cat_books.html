@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}<h1 class="my-con1">类型信息</h1>{% endblock %}
+
+{% block content %}
+    <div class="body">
+        <h2 class="title-style">类型基本信息</h2>
+        <ul class="b1">
+        <li>类型名称：{{ category.name }}</li>
+        </ul>
+
+        <a href="{% url 'cat_update' category.id %}" class="m1">编辑信息</a>
+
+        <h2 class="title-style">所属图书</h2>
+        <ul class="b1">
+        {% for book in cat_books %}
+        <li>
+          <a href="{{ book.get_absolute_url }}">{{ book.name }}</a> ({{book.get_author}})
+        </li>
+        {% empty %}
+        <li>
+            没有了，没有这类图书了！
+        </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+
+
+{% endblock %}

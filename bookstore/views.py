@@ -45,6 +45,7 @@ def book_list(request):
             aname = form.cleaned_data['author']
             lang = form.cleaned_data['language']
             pub = form.cleaned_data['publisher']
+            cate = form.cleaned_data['category']
             selected_books = Book.objects.distinct()
             if pub:
                 # selected_books = Publisher.objects.get(name=pub).book_set.order_by('name')
@@ -59,6 +60,8 @@ def book_list(request):
                     selected_books = selected_books.filter(author__name__contains=name)
             if lang:
                 selected_books = selected_books.filter(language=lang)
+            if cate:
+                selected_books = selected_books.filter(category__name__contains=cate)
             context = {'selected_books': selected_books}
             return render(request, 'bookstore/search.html', context=context)
     return render(request, 'bookstore/book_list.html', context=ct)
@@ -164,11 +167,18 @@ def new_book(request):
                 publisher.save()
             else:
                 publisher = pubtemp[0]
+            catetemp = Category.objects.filter(name=form.cleaned_data['category'])
+            if not catetemp:
+                category = Category(name=form.cleaned_data['category'])
+                category.save()
+            else:
+                category = catetemp[0]
             new_book = Book(
                 ISBN=form.cleaned_data['ISBN'],
                 name=form.cleaned_data['name'],
                 language=form.cleaned_data['language'],
                 publisher=publisher,
+                category=category,
                 price=form.cleaned_data['price'],
                 inventory=form.cleaned_data['amount'],
             )
@@ -296,6 +306,12 @@ def edit_book(request, bid):
                 publisher.save()
             else:
                 publisher = publishers[0]
+            categories = Category.objects.filter(name=form.cleaned_data['category'])
+            if not categories:
+                category = Category(name=form.cleaned_data['category'])
+                category.save()
+            else:
+                category = categories[0]
 
             # 修改 author 时，先清除原有的多对多关联，再重新加
             targ.author.clear()
@@ -312,6 +328,7 @@ def edit_book(request, bid):
             targ.name = form.cleaned_data['name']
             targ.language = form.cleaned_data['language']
             targ.publisher = publisher
+            targ.category = category
             targ.price = form.cleaned_data['price']
             targ.save()
             messages.error(request, '修改成功')
@@ -320,7 +337,7 @@ def edit_book(request, bid):
             messages.error(request, '修改失败，请重试。注意务必按照规定的格式填写信息！')
     else:
         default_data = {'name': targ.name, 'author': targ.get_author(), 'publisher': targ.publisher,
-                        'language': targ.language, 'price': targ.price}
+                        'language': targ.language, 'category': targ.category, 'price': targ.price}
         form = EditBookForm(default_data)
     return render(request, 'bookstore/edit_book.html', {'form': form, 'book': targ, 'user': user})
 
@@ -470,4 +487,59 @@ def author_update(request, aid):
         form = AuthorUpdateForm(default_data)
     return render(request, 'bookstore/author_update.html', {'form': form, 'author': author})
 
+
+@login_required
+def categories(request):
+    '''
+    查看所有类型
+    :param request:
+    :return:
+    '''
+    cats = Category.objects.all()
+    ct = {'cats': cats}
+    if request.method == 'POST':
+        form = CatSearchForm(request.POST)
+        if form.is_valid():
+            cat_name = form.cleaned_data['name']
+            selected_cats = Category.objects.filter(name__contains=cat_name)
+            context = {'selected_cats': selected_cats}
+            return render(request, 'bookstore/cat_search.html', context=context)
+    return render(request, 'bookstore/category_list.html', context=ct)
+
+
+@login_required
+def cat_books(request, cid):
+    '''
+    展示类型信息与所属图书，可以修改信息
+    :param request:
+    :param pid:
+    :return:
+    '''
+    cat = get_object_or_404(Category, id=cid)
+    cat_books = cat.book_set.filter(category=cat)
+    return render(request, 'bookstore/cat_books.html', {'category': cat, 'cat_books': cat_books})
+
+
+@login_required
+def cat_update(request, cid):
+    '''
+    修改类型信息
+    :param request:
+    :param pid:
+    :return:
+    '''
+    cat = get_object_or_404(Category, id=cid)
+    if request.method == 'POST':
+        form = CatUpdateForm(request.POST)
+        if form.is_valid():
+            cat.name = form.cleaned_data['name']
+            cat.save()
+            messages.error(request, '修改成功')
+            return HttpResponseRedirect(reverse('cat_books', args=[cid]))
+        else:
+            messages.error(request, '修改失败，请重试。注意务必按照规定的格式填写信息！')
+    else:
+        default_data = {'name': cat.name, }
+        form = CatUpdateForm(default_data)
+    return render(request, 'bookstore/cat_update.html', {'form': form, 'cat': cat})
 

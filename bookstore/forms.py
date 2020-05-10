@@ -25,6 +25,7 @@ class NewBookForm(forms.Form):
     author = forms.CharField(label='作者', max_length=30)
     language = forms.CharField(label='作者', max_length=10)
     publisher = forms.CharField(label='出版社', max_length=30)
+    category = forms.CharField(label='类型', max_length=10)
     cost = forms.DecimalField(label='进价', max_value=999.99, min_value=0.01, max_digits=5, decimal_places=2)
     price = forms.DecimalField(label='零售价', max_value=999.99, min_value=0.01, max_digits=5, decimal_places=2)
     amount = forms.IntegerField(label='数量', min_value=1)
@@ -54,6 +55,7 @@ class SearchForm(forms.Form):
     author = forms.CharField(label='作者', max_length=30, required=False)
     language = forms.CharField(label='作者', max_length=10, required=False)
     publisher = forms.CharField(label='出版社', max_length=30, required=False)
+    category = forms.CharField(label='类型', max_length=10, required=False)
 
 
 class TimeSpanForm(forms.Form):
@@ -75,6 +77,7 @@ class EditBookForm(forms.Form):
     publisher = forms.CharField(label='出版社', max_length=30)
     language = forms.CharField(label='作者', max_length=10)
     price = forms.DecimalField(label='零售价', max_value=999.99, min_value=0.01, max_digits=5, decimal_places=2)
+    category = forms.CharField(label='类型', max_length=10)
 
 
 class PayForm(forms.Form):
@@ -100,3 +103,12 @@ class AuthorSearchForm(forms.Form):
 
 class AuthorUpdateForm(forms.Form):
     name = forms.CharField(label='作者姓名', max_length=50)
+
+
+class CatSearchForm(forms.Form):
+    name = forms.CharField(label='类型名称', max_length=10, required=False)
+
+
+class CatUpdateForm(forms.Form):
+    name = forms.CharField(label='类型名称', max_length=10)
+

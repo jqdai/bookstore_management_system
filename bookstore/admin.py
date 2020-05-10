@@ -33,6 +33,12 @@ class PublisherAdmin(admin.ModelAdmin):
     list_filter = ('name', )
 
 
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', )
+    list_filter = ('name', )
+
+
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('name', )

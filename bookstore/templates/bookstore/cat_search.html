@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>抽象圣经类别检索结果</h1>
+
+    {% if selected_cats %}
+    <ul>
+
+      {% for cat in selected_cats %}
+      <li>
+        <p>商品信息：<a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></p>
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>居然没给抽象圣经分类？在？道个歉？</p>
+    {% endif %}       
+{% endblock %}
