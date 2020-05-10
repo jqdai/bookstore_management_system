@@ -60,8 +60,10 @@ class TimeSpanForm(forms.Form):
     '''
     按时间范围检索交易记录
     '''
+    states = (('in', '进货'), ('out', '出货'))
     start_time = forms.DateTimeField(label='起始时间')
     end_time = forms.DateTimeField(label='结束时间')
+    stat = forms.CharField(label='进货/出货', widget=forms.widgets.Select(choices=states))
 
 
 class EditBookForm(forms.Form):

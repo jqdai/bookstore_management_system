@@ -47,11 +47,12 @@ def book_list(request):
             pub = form.cleaned_data['publisher']
             selected_books = Book.objects.distinct()
             if pub:
-                selected_books = Publisher.objects.get(name=pub).book_set.order_by('name')
+                # selected_books = Publisher.objects.get(name=pub).book_set.order_by('name')
+                selected_books = Book.objects.filter(publisher__name__contains=pub)
             if isbn:
                 selected_books = selected_books.filter(ISBN=isbn)
             if bname:
-                selected_books = selected_books.filter(name=bname)
+                selected_books = selected_books.filter(name__contains=bname)
             if aname:
                 aname_list = aname.split('，')
                 for name in aname_list:
@@ -77,7 +78,10 @@ def transactions(request):
         if form.is_valid():
             stime = form.cleaned_data['start_time']
             etime = form.cleaned_data['end_time']
+            stat = form.cleaned_data['stat']
             selected_trans = Transaction.objects.filter(time__range=(stime, etime))
+            if stat:
+                selected_trans = selected_trans.filter(in_out=stat)
             context = {'selected_trans': selected_trans}
             return render(request, 'bookstore/time_span.html', context=context)
     return render(request, 'bookstore/transaction_list.html', context=ct)
