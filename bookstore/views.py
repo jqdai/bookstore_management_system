@@ -143,12 +143,10 @@ def profile_update(request, uid):
             admin.age = form.cleaned_data['age']
             admin.gender = form.cleaned_data['gender']
             admin.address = form.cleaned_data['address']
-            admin.phone = form.cleaned_data['phone']
             admin.save()
             return HttpResponseRedirect(reverse('profile', args=[user.id]))
     else:
-        default_data = {'name': admin.name, 'age': admin.age, 'gender': admin.gender,
-                        'phone': admin.phone, 'address': admin.address}
+        default_data = {'name': admin.name, 'age': admin.age, 'gender': admin.gender, 'address': admin.address}
         form = ProfileForm(default_data)
     return render(request, 'bookstore/profile_update.html', {'form': form, 'user': user})
 

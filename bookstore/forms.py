@@ -11,8 +11,6 @@ class ProfileForm(forms.Form):
     name = forms.CharField(label='姓名', max_length=30)
     age = forms.CharField(label='年龄', max_length=2)
     gender = forms.CharField(label='性别', widget=forms.widgets.Select(choices=sex))
-    phone = forms.CharField(label='电话', max_length=11,
-                            validators=[vl.RegexValidator(regex='^1(3|5|7|8|9)\d{9}$', message='请确保手机号格式正确！')])
     address = forms.CharField(label='住址', max_length=50)
 
 
