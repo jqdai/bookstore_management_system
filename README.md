@@ -60,6 +60,9 @@
 - bookstore/author 作者列表
 - bookstore/authors/<int:aid> 查看作者信息
 - bookstore/authors/<int:aid>/update 修改作者信息
+- bookstore/categories/ 类型列表
+- bookstore/categories/<int:cid>/ 查看类型信息
+- bookstore/categories/<int:cid>/update/ 修改类型信息
 - accounts/login 登录
 - accounts/password_reset 通过邮件重置密码
 
