@@ -285,7 +285,7 @@ def sell_book(request, bid):
                     cost=targ.price,
                     amount=book_amount,
                     time=timezone.now(),
-                    paid=True,
+                    paid='已付款',
                 )
                 new_trans.save()
                 messages.error(request, '出售成功')
