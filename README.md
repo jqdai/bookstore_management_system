@@ -41,6 +41,7 @@
 - [x] 利用 Category 模式重构 Book 模式，利用 ManyToMany 处理一本书多个类型问题
 - [x] 利用 Phone 模式重构 Admin 模式，利用ForeignKey 处理一名管理员多个电话问题
 - [ ] 及时有效的提示弹窗
+- [ ] 扩容功能，新建 Customer 等模式，使之具有为顾客服务功能
 - [ ] 使用 Bootstrap / MDUI 改进前端网页
 
 ## 网页索引
