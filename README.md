@@ -38,6 +38,8 @@
 - [x] 利用 split 和 __contain 处理一本书多个作者问题
 - [x] 利用 Publisher 模式重构 Book 模式，利用 ForeignKey 处理出版社问题
 - [x] 利用 Author 模式重构 Book 模式，利用 ManyToMany 处理一本书多个作者问题
+- [x] 利用 Category 模式重构 Book 模式，利用 ManyToMany 处理一本书多个类型问题
+- [x] 利用 Phone 模式重构 Admin 模式，利用ForeignKey 处理一名管理员多个电话问题
 - [ ] 及时有效的提示弹窗
 - [ ] 使用 Bootstrap / MDUI 改进前端网页
 
