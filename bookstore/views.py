@@ -121,7 +121,9 @@ def profile(request, uid):
     '''
     admin = get_object_or_404(Admin, id=uid)
     responsible_transactions = Transaction.objects.filter(ruler=admin)
-    return render(request, 'bookstore/profile.html', {'admin': admin, 'res_trans': responsible_transactions})
+    phonenumber = Phone.objects.filter(admin=admin.user)
+    return render(request, 'bookstore/profile.html', {'admin': admin, 'res_trans': responsible_transactions,
+                                                      'phones': phonenumber})
 
 
 @login_required

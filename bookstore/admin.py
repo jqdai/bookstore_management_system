@@ -15,8 +15,14 @@ class AdminInline(admin.StackedInline):
     verbose_name_plural = 'admins'
 
 
+class PhoneInline(admin.StackedInline):
+    model = Phone
+    can_delete = False
+    verbose_name_plural = 'phones'
+
+
 class UserAdmin(BaseUserAdmin):
-    inlines = (AdminInline,)
+    inlines = [AdminInline, PhoneInline]
 
 
 admin.site.unregister(User)
@@ -56,4 +62,10 @@ class BookAdmin(admin.ModelAdmin):
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('id', 'book', 'in_out', 'cost', 'amount', 'time')
     list_filter = ('book', 'time')
+
+
+@admin.register(Phone)
+class PhoneAdmin(admin.ModelAdmin):
+    list_display = ('admin', 'number')
+    list_filter = ('admin',)
 

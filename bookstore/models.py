@@ -17,8 +17,8 @@ class Admin(models.Model):
     age = models.PositiveIntegerField(verbose_name='年龄',
                                       validators=[vl.MaxValueValidator(99), vl.MinValueValidator(1)], default=18)
     address = models.CharField(max_length=50, verbose_name='住址')
-    phone = models.CharField(max_length=11, verbose_name='联系方式（手机）', help_text='请输入中国大陆11位手机号', validators=
-                             [vl.RegexValidator(regex='^1(3|5|7|8|9)\d{9}$', message='请确保手机号格式正确！')])
+    # phone = models.CharField(max_length=11, verbose_name='联系方式（手机）', help_text='请输入中国大陆11位手机号', validators=
+    #                         [vl.RegexValidator(regex='^1(3|5|7|8|9)\d{9}$', message='请确保手机号格式正确！')])
 
     class Meta:
         verbose_name = '管理员信息'
@@ -26,6 +26,19 @@ class Admin(models.Model):
 
     def __str__(self):
         return self.user.get_username()
+
+
+class Phone(models.Model):
+    admin = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='管理员姓名')
+    number = models.CharField(max_length=11, verbose_name='联系方式（手机）', help_text='请输入中国大陆11位手机号', validators=
+                              [vl.RegexValidator(regex='^1(3|5|7|8|9)\d{9}$', message='请确保手机号格式正确！')])
+
+    class Meta:
+        verbose_name = '联系方式'
+        verbose_name_plural = '联系方式'
+
+    def __str__(self):
+        return self.number
 
 
 class Publisher(models.Model):

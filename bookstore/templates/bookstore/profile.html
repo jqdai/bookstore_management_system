@@ -11,7 +11,18 @@
         <li>年龄：{{ admin.age }}</li>
         <li>性别：{{ admin.gender }}</li>
         <li>住址：{{ admin.address }}</li>
-        <li>电话：{{ admin.phone }}</li>
+        </ul>
+        <p>联系方式：</p>
+        <ul>
+            {% for phone in phones %}
+            <li>
+                {{ phone.number }}
+            </li>
+            {% empty %}
+            <li>
+                没有了，没有此人的电话号码了！
+            </li>
+            {% endfor %}
         </ul>
 
         <a href="{% url 'profile_update' user.id %}" class="m1">编辑信息</a>
