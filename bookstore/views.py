@@ -199,7 +199,7 @@ def new_book(request):
                     new_category.save()
                 else:
                     new_category = cat_temp[0]
-                new_book.author.add(new_category)
+                new_book.category.add(new_category)
 
             new_trans = Transaction(
                 in_out='进货',
