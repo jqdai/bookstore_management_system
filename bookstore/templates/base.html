@@ -10,26 +10,39 @@
 </head>
 
 <body>
-    <ul class="nav nav-pills">
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand">抽象</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
         <li role="presentation" class="active"><a href="{% url 'index' %}">主页</a></li>
         <li role="presentation"><a href="{% url 'books' %}">图书</a></li>
         <li role="presentation"><a href="{% url 'transactions' %}">交易记录</a></li>
         <li role="presentation"><a href="{% url 'publishers' %}">出版社</a></li>
         <li role="presentation"><a href="{% url 'authors' %}">作者</a></li>
         <li role="presentation"><a href="{% url 'categories' %}">出版物类型</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'profile' user.id %}?next={{request.path}}">{{ user.get_username }}</a></li>
+          <li><a href="{% url 'logout'%}?next={{request.path}}">注销</a></li>
+          <li><a href="{% url 'newbook' %}?next={{request.path}}">增添新书</a></li>
+        {% else %}
+          <li><a href="{% url 'login'%}?next={{request.path}}">去登录</a></li>
+        {% endif %}
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
-    </ul>
-    {% block sidebar %}
-      {% if user.is_authenticated %}
-        <li>当前用户: {{ user.get_username }}</li>
-        <li><a href="{% url 'logout'%}?next={{request.path}}">注销</a></li>
-        <li><a href="{% url 'profile' user.id %}?next={{request.path}}">查看当前用户信息</a></li>
-        <li><a href="{% url 'newbook' %}?next={{request.path}}">增添新书</a></li>
-      {% else %}
-        <li><a href="{% url 'login'%}?next={{request.path}}">前往登录界面</a></li>
-      {% endif %}
-    {% endblock %}
+{% block content %}{% endblock %}
 
-      {% block content %}{% endblock %}
 </body>
 </html>
