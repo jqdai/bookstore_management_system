@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="zh-hans">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>抽象书城不欢迎您！</title>
   {% block title %}<title>抽象书城不欢迎你！</title>{% endblock %}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
+    <ul class="nav nav-pills">
+        <li role="presentation" class="active"><a href="{% url 'index' %}">主页</a></li>
+        <li role="presentation"><a href="{% url 'books' %}">图书</a></li>
+        <li role="presentation"><a href="{% url 'transactions' %}">交易记录</a></li>
+        <li role="presentation"><a href="{% url 'publishers' %}">出版社</a></li>
+        <li role="presentation"><a href="{% url 'authors' %}">作者</a></li>
+        <li role="presentation"><a href="{% url 'categories' %}">出版物类型</a></li>
 
+    </ul>
     {% block sidebar %}
-      <ul class="sidebar-nav">
-          <li><a href="{% url 'index' %}">主页</a></li>
-          <li><a href="{% url 'books' %}">图书列表</a></li>
-          <li><a href="{% url 'transactions' %}">交易记录列表</a></li>
-          <li><a href="{% url 'publishers' %}">出版社列表</a></li>
-          <li><a href="{% url 'authors' %}">作者列表</a></li>
-          <li><a href="{% url 'categories' %}">类型列表</a></li>
-      </ul>
       {% if user.is_authenticated %}
         <li>当前用户: {{ user.get_username }}</li>
         <li><a href="{% url 'logout'%}?next={{request.path}}">注销</a></li>
