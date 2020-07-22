@@ -1,25 +1,41 @@
 {% extends 'base.html' %}
-{% block title %}<h1 class="my-con1">作者信息</h1>{% endblock %}
 
 {% block content %}
-        <h2>作者基本信息</h2>
-        <ul class="b1">
-        <li>作者姓名：{{ author.name }}</li>
-        </ul>
+  <div style="margin-left:20px;margin-top:20px">
+    <h2>{{ author.name }}</h2>
 
-        <a href="{% url 'author_update' author.id %}" class="m1">编辑信息</a>
+    <a class="btn btn-default" href="{% url 'author_update' author.id %}" role="button">编辑信息</a>
 
-        <h2>著作</h2>
-        <ul>
+    <h3>作品列表</h3>
+
+
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+            <th>图书编号</th>
+            <th>书名</th>
+            <th>出版社</th>
+            <th>作者</th>
+            <th>ISBN</th>
+            <th>类型</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for book in author_books %}
-        <li>
-          <a href="{{ book.get_absolute_url }}">{{ book.name }}</a> ({{ book.get_author }})
-        </li>
-        {% empty %}
-        <li>
-            没有了，没有此人的著作了！
-        </li>
-        {% endfor %}
-        </ul>
 
+          <tr>
+            <td>{{ book.id }}</td>
+            <td><a href="{{ book.get_absolute_url }}">{{ book.name }}</a></td>
+            <td>{{ book.publisher }}</td>
+            <td>{{ book.ISBN }}</td>
+            <td>{{ book.get_author }}</td>
+            <td>{{ book.get_category }}</td>
+          </tr>
+        {% empty %}
+          <li>没有了，没有此人的著作了！</li>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
