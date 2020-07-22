@@ -38,27 +38,42 @@
     </form>
     <p>若点击“搜索”后仍返回此页面，则表示检索失败。请确保填写格式符合上述要求！</p>
 
-    <h2>未付款订单付款或退货</h2>
-    <a href="{% url 'payment' %}">去付款/退货</a>
-    <h2>抽象圣经交易记录一览表</h2>
 
+    <h2 class="form-signin-heading text-center">交易记录列表</h2>
+    <a class="btn btn-default" href="{% url 'payment' %}" role="button">更改进货订单状态</a>
     {% if transactions %}
-    <ul>
 
-      {% for tran in transactions %}
-      <li>
-        <p>交易单号：{{ tran.id }}</p>
-        <p>商品信息：<a href="{{ tran.book.get_absolute_url }}">{{ tran.book }}</a></p>
-        <p>交易时间：{{ tran.time|date:'Y 年 M d 日 H:i' }}</p>
-        <p>进货出货：{{ tran.in_out }}</p>
-        <p>交易数量：(本){{ tran.amount }}</p>
-        <p>成交价格：{{ tran.cost }}</p>
-        <p>付款状态：{{ tran.paid }}</p>
-        <p>负责人：{{ tran.ruler }}</p>
-      </li>
-      {% endfor %}
+    <table class="table table-hover">
+      <thead>
+        <tr>
+            <th>交易单号</th>
+            <th>商品信息</th>
+            <th>交易时间</th>
+            <th>货物流向</th>
+            <th>交易数量</th>
+            <th>成交价格</th>
+            <th>付款状态</th>
+            <th>负责人</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for trans in transactions %}
+          <tr>
+            <td>{{ trans.id }}</td>
+            <td>{{ trans.book }}</td>
+            <td>{{ trans.time|date }}</td>
+            <td>{{ trans.in_out }}</td>
+            <td>{{ trans.amount }}</td>
+            <td>{{ trans.cost }}</td>
+            <td>{{ trans.paid }}</td>
+            <td>{{ trans.ruler }}</td>
+          </tr>
+        {% empty %}
+          <li>暂无交易记录！</li>
+        {% endfor %}
+      </tbody>
+    </table>
 
-    </ul>
     {% else %}
       <p>居然没人买抽象圣经？在？道个歉？</p>
     {% endif %}       
