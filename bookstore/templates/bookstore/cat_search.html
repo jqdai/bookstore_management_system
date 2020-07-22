@@ -9,7 +9,7 @@
 
       {% for cat in selected_cats %}
       <li>
-        <p>商品信息：<a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></p>
+        <p><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></p>
       </li>
       {% endfor %}
 
