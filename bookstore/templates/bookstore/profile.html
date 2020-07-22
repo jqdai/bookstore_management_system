@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% block title %}<h1 class="my-con1">用户个人信息</h1>{% endblock %}
 
 {% block content %}
     <div class="body">
@@ -25,25 +24,40 @@
             {% endfor %}
         </ul>
 
-        <a href="{% url 'profile_update' user.id %}" class="m1">编辑信息</a>
+        <a class="btn btn-default" href="{% url 'profile_update' user.id %}" role="button">编辑信息</a>
 
         <h2>负责订单</h2>
-        <ul class="b1">
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+            <th>交易单号</th>
+            <th>商品信息</th>
+            <th>交易时间</th>
+            <th>货物流向</th>
+            <th>交易数量</th>
+            <th>成交价格</th>
+            <th>付款状态</th>
+            <th>负责人</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for trans in res_trans %}
-        <li>
-        <p>交易单号：{{ trans.id }}</p>
-        <p>交易时间：{{ trans.time|date:'Y 年 M d 日 H:i' }}</p>
-        <p>货物流向：{{ trans.in_out }}</p>
-        <p>交易数量：(本){{ trans.amount }}</p>
-        <p>成交价格：{{ trans.cost }}</p>
-        <p>付款状态：{{ trans.paid }}</p>
-        </li>
+          <tr>
+            <td>{{ trans.id }}</td>
+            <td>{{ trans.book }}</td>
+            <td>{{ trans.time|date }}</td>
+            <td>{{ trans.in_out }}</td>
+            <td>{{ trans.amount }}</td>
+            <td>{{ trans.cost }}</td>
+            <td>{{ trans.paid }}</td>
+            <td>{{ trans.ruler }}</td>
+          </tr>
         {% empty %}
-        <li>
-            没有了，没有此人负责的订单了！
-        </li>
+          <li>暂无交易记录！</li>
         {% endfor %}
-        </ul>
+      </tbody>
+    </table>
     </div>
 
 
