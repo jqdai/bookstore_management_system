@@ -87,7 +87,7 @@ def transactions(request):
             selected_trans = Transaction.objects.filter(time__range=(stime, etime))
             if stat:
                 selected_trans = selected_trans.filter(in_out=stat)
-            context = {'selected_trans': selected_trans}
+            context = {'selected_trans': selected_trans, 'st': stime, 'et': etime}
             return render(request, 'bookstore/time_span.html', context=context)
     return render(request, 'bookstore/transaction_list.html', context=ct)
 

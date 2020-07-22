@@ -3,25 +3,41 @@
 {% block content %}
 
     <h1>抽象圣经交易记录检索结果</h1>
+    <h3>时间跨度：{{ st }} - {{ et }}</h3>
 
     {% if selected_trans %}
-    <ul>
+      <table class="table table-hover">
+      <thead>
+        <tr>
+            <th>交易单号</th>
+            <th>商品信息</th>
+            <th>交易时间</th>
+            <th>货物流向</th>
+            <th>交易数量</th>
+            <th>成交价格</th>
+            <th>付款状态</th>
+            <th>负责人</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for trans in selected_trans %}
+          <tr>
+            <td>{{ trans.id }}</td>
+            <td>{{ trans.book }}</td>
+            <td>{{ trans.time|date }}</td>
+            <td>{{ trans.in_out }}</td>
+            <td>{{ trans.amount }}</td>
+            <td>{{ trans.cost }}</td>
+            <td>{{ trans.paid }}</td>
+            <td>{{ trans.ruler }}</td>
+          </tr>
+        {% empty %}
+          <li>暂无交易记录！</li>
+        {% endfor %}
+      </tbody>
+    </table>
 
-      {% for tran in selected_trans %}
-      <li>
-        <p>交易单号：{{ tran.id }}</p>
-        <p>商品信息：<a href="{{ tran.book.get_absolute_url }}">{{ tran.book }}</a></p>
-        <p>交易时间：{{ tran.time|date:'Y 年 M d 日 H:i' }}</p>
-        <p>进货出货：{{ tran.in_out }}</p>
-        <p>交易数量：(本){{ tran.amount }}</p>
-        <p>成交价格：{{ tran.cost }}</p>
-        <p>订单状态：{{ tran.paid }}</p>
-        <p>负责人：{{ tran.ruler }}</p>
-      </li>
-      {% endfor %}
-
-    </ul>
     {% else %}
-      <p>居然没人管抽象圣经？在？道个歉？</p>
-    {% endif %}       
+      <p>居然没人买抽象圣经？在？道个歉？</p>
+    {% endif %}
 {% endblock %}
