@@ -67,15 +67,33 @@
 
     <h1>抽象圣经一览表</h1>
     {% if all_books %}
-    <ul>
 
-      {% for book in all_books %}
-      <li>
-        <a href="{{ book.get_absolute_url }}">{{ book.name }}</a> ({{ book.get_author }})
-      </li>
-      {% endfor %}
+        <table class="table table-hover">
+          <thead>
+            <tr>
+                <th>编号</th>
+                <th>书名</th>
+                <th>作者</th>
+                <th>出版社</th>
+                <th>类型</th>
+                <th>ISBN</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for book in all_books %}
+              <tr>
+                <td>{{ book.id }}</td>
+                <td><a href="{{ book.get_absolute_url }}">{{ book.name }}</a></td>
+                <td>{{ book.get_author }}</td>
+                <td>{{ book.publisher }}</td>
+                <td>{{ book.get_category }}</td>
+                <td>{{ book.ISBN }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
 
-    </ul>
+
     {% else %}
       <p>没有了，没有抽象圣经了！</p>
     {% endif %}
