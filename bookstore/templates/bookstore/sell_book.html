@@ -8,7 +8,7 @@
             <h2>交易成功</h2>
         </div>
     {% endif %}
-    <form method="POST" role="form" class="form-horizontal">
+    <form method="POST" role="form" class="form-inline">
         {% csrf_token %}
         <h1>销售图书</h1>
         <p>交易对象：</p>
@@ -22,22 +22,16 @@
         <p><strong>零售价:</strong> {{ book.price }}</p>
 
         <div class="form-group">
-            <label for="id_amount" class="col-md-3 control-label">数量：</label>
-            <div class="col-md-9">
-                <input type="text" class="form-control" id="id_amount" required name="amount" placeholder="请输入一个正整数">
-            </div>
+            <label for="id_amount">数量：</label>
+            <input type="text" class="form-control" id="id_amount" required name="amount" placeholder="请输入一个正整数">
         </div>
 
         <div class="form-group">
-            <div class="col-md-4 col-md-offset-4">
-                <button class="btn btn btn-primary btn-block" type="submit">提交订单</button>
-                <button class="btn btn btn-primary btn-block" type="reset">重置</button>
-            </div>
+            <button class="btn btn-default" type="submit">提交订单</button>
+            <button class="btn btn-default" type="reset">重置</button>
         </div>
     </form>
     <p>若点击“提交订单”后仍返回此页面，则表示交易失败。请确保填写格式符合上述要求！</p>
-
-    <a href="{% url 'related_transaction' book.id %}">取消交易</a>
 
     {% if messages %}
     <script>
