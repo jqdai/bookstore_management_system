@@ -2,32 +2,24 @@
 
 {% block content %}
 
-    <form method="POST" role="form" class="form-horizontal">
+    <form method="POST" role="form" class="form-inline">
         {% csrf_token %}
-        <h2 class="form-signin-heading text-center">修改订单状态</h2>
 
         <div class="form-group">
             <label for="id_tid" class="col-md-3 control-label">交易单号：</label>
-            <div class="col-md-9">
-                <input type="text" class="form-control" name="tid" id="id_tid">
-            </div>
+            <input type="text" class="form-control" name="tid" id="id_tid">
         </div>
 
-        <div class="form-group">
-            <p>修改订单状态为：</p>
-            <input type="radio" class="form-control" name="paid" id="contactChoice1" value="已付款" checked>
-            <label for="pay" class="col-md-3 control-label">已付款</label>
-            <input type="radio" class="form-control" name="paid" id="contactChoice2" value="已退货" checked>
-            <label for="ret" class="col-md-3 control-label">已退货</label>
-        </div>
-
-        <p></p>
+        <label class="radio-inline" for="pay">
+          <input type="radio" name="paid" id="icontactChoice1" value="已付款" checked> 已付款
+        </label>
+        <label class="radio-inline" for="ret">
+          <input type="radio" name="paid" id="icontactChoice2" value="已退货" checked> 已退货
+        </label>
 
         <div class="form-group">
-            <div class="col-md-4 col-md-offset-4">
-                <button class="btn btn btn-primary btn-block" type="submit">执行</button>
-                <button class="btn btn btn-primary btn-block" type="reset">重置</button>
-            </div>
+                <button class="btn btn-default" type="submit">执行</button>
+                <button class="btn btn-default" type="reset">重置</button>
         </div>
     </form>
     <p>若点击“执行”后仍返回此页面，则表示检索失败。请确保填写格式符合上述要求！</p>
