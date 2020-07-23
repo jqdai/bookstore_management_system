@@ -24,7 +24,6 @@
       <thead>
         <tr>
             <th>交易单号</th>
-            <th>商品信息</th>
             <th>交易时间</th>
             <th>货物流向</th>
             <th>交易数量</th>
@@ -37,7 +36,6 @@
         {% for trans in related_transaction %}
           <tr>
             <td>{{ trans.id }}</td>
-            <td>{{ trans.book }}</td>
             <td>{{ trans.time|date }}</td>
             <td>{{ trans.in_out }}</td>
             <td>{{ trans.amount }}</td>
