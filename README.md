@@ -4,10 +4,13 @@
 
 ## 开发环境
 
-- Windows 10 64位（DirectX 12）
-- pycharm 2020.1（专业版）
-- python 3.8
-- django 3.0.5
+- 操作系统: Windows 10 64位（DirectX 12）
+- IDE: PyCharm 2020.1（专业版）
+- Python 3.8.0
+- Django 3.0.5
+- Bootstrap 3.3.7
+- Node.js 12.18.3
+- Vue.js 2.9.6
 
 ## 功能
 
@@ -40,11 +43,12 @@
 - [x] 利用 Author 模式重构 Book 模式，利用 ManyToMany 处理一本书多个作者问题
 - [x] 利用 Category 模式重构 Book 模式，利用 ManyToMany 处理一本书多个类型问题
 - [x] 利用 Phone 模式重构 Admin 模式，利用ForeignKey 处理一名管理员多个电话问题
-- [ ] 及时有效的提示弹窗
+- [ ] 及时有效的提示弹窗（Bootstrap）
 - [ ] 扩容功能，新建 Customer 等模式，使之具有为顾客服务功能
-- [ ] 使用 Bootstrap / MDUI 改进前端网页
+- [x] 使用 Bootstrap 美化前端网页
+- [ ] 使用 Vue.js 实现前后端分离开发
 
-## 网页索引
+## 网页索引（Bootstrap版本）
 
 - admin/ 超级管理员网站
 - bookstore/ 默认主页
@@ -68,6 +72,10 @@
 - bookstore/categories/<int:cid>/update/ 修改类型信息
 - accounts/login 登录
 - accounts/password_reset 通过邮件重置密码
+
+# Vue.js
+
+- 2020.8.10 留
 
 ## 数据库设计说明
 
