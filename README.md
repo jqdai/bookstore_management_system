@@ -46,7 +46,7 @@
 - [ ] 及时有效的提示弹窗（Bootstrap）
 - [ ] 扩容功能，新建 Customer 等模式，使之具有为顾客服务功能
 - [x] 使用 Bootstrap 美化前端网页
-- [ ] 使用 Vue.js 实现前后端分离开发
+- [ ] 使用 Vue.js 实现前后端分离开发(ing)
 
 ## 网页索引（Bootstrap版本）
 
